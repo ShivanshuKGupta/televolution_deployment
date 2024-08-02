@@ -18,7 +18,7 @@ RUN chmod +x /app/docker_run.sh
 
 EXPOSE 8000 8001 3000 3001
 
-ENTRYPOINT ["sh", "-c", "dockerd & sleep 10 && ./docker_run.sh load"]
+ENTRYPOINT ["sh", "-c", "dockerd & sleep 10 && /app/docker_run.sh load"]
 
 # FROM ubuntu:22.04
 
