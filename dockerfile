@@ -12,7 +12,7 @@ COPY . /app
 
 WORKDIR /app
 
-RUN [ -d "/app/docker_image_builds" ] || { echo "Error: docker_image_builds folder does not exist"; exit 1; }
+# RUN [ -d "/app/docker_image_builds" ] || { echo "Error: docker_image_builds folder does not exist"; exit 1; }
 
 RUN chmod +x docker_run.sh
 
