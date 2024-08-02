@@ -84,41 +84,41 @@ create_release=false
 download_release=false
 
 if [ $# -eq 0 ]; then
-    read -p "Do you want to do a clean build? (y/n): " clean_build_choice
-    read -p "Do you want to deploy the backend (studio)? (y/n): " deploy_studio_choice
-    read -p "Do you want to deploy the monitor? (y/n): " deploy_monitor_choice
-    read -p "Do you want to deploy the middleware? (y/n): " deploy_middleware_choice
-    read -p "Do you want to deploy the frontend? (y/n): " deploy_frontend_choice
-    read -p "Do you want to save the images? (y/n): " save_images_choice
-    read -p "Do you want to load the images? (y/n): " load_images_choice
+    # read -p "Do you want to do a clean build? (y/n): " clean_build_choice
+    # read -p "Do you want to deploy the backend (studio)? (y/n): " deploy_studio_choice
+    # read -p "Do you want to deploy the monitor? (y/n): " deploy_monitor_choice
+    # read -p "Do you want to deploy the middleware? (y/n): " deploy_middleware_choice
+    # read -p "Do you want to deploy the frontend? (y/n): " deploy_frontend_choice
+    # read -p "Do you want to save the images? (y/n): " save_images_choice
+    # read -p "Do you want to load the images? (y/n): " load_images_choice
 
-    if [[ $clean_build_choice == "y" ]]; then
-        clean_build=true
-    fi
+    # if [[ $clean_build_choice == "y" ]]; then
+    #     clean_build=true
+    # fi
 
-    if [[ $deploy_studio_choice == "y" ]]; then
-        deploy_studio=true
-    fi
+    # if [[ $deploy_studio_choice == "y" ]]; then
+    #     deploy_studio=true
+    # fi
 
-    if [[ $deploy_monitor_choice == "y" ]]; then
-        deploy_monitor=true
-    fi
+    # if [[ $deploy_monitor_choice == "y" ]]; then
+    #     deploy_monitor=true
+    # fi
 
-    if [[ $deploy_middleware_choice == "y" ]]; then
-        deploy_middleware=true
-    fi
+    # if [[ $deploy_middleware_choice == "y" ]]; then
+    #     deploy_middleware=true
+    # fi
 
-    if [[ $save_images_choice == "y" ]]; then
-        save_images=true
-    fi
+    # if [[ $save_images_choice == "y" ]]; then
+    #     save_images=true
+    # fi
 
-    if [[ $load_images_choice == "y" ]]; then
+    # if [[ $load_images_choice == "y" ]]; then
         load_images=true
-    fi
+    # fi
 
-    if [[ $deploy_frontend_choice == "y" ]]; then
-        deploy_frontend=true
-    fi
+    # if [[ $deploy_frontend_choice == "y" ]]; then
+    #     deploy_frontend=true
+    # fi
 else
     while [[ "$#" -gt 0 ]]; do
         case $1 in
@@ -148,6 +148,43 @@ fi
 # docker login || echo "Docker login failed."
 # git pull || echo "Git pull failed. Continuing..."
 # docker pull node:20-slim || error_exit "Docker pull failed."
+
+# Function to check if Docker is running
+is_docker_running() {
+    docker info >/dev/null 2>&1
+}
+
+# Check if Docker is running
+if is_docker_running; then
+    echo "Docker is running."
+else
+    echo "Docker is not running."
+
+    # Try to start Docker service
+    if command -v docker >/dev/null 2>&1; then
+        echo "Attempting to start Docker..."
+        # For Docker-in-Docker scenarios, you might need to run Docker directly
+        # or use Docker's service management commands specific to your environment
+        # Note: This will depend on your setup (like using Docker-in-Docker)
+        # Example command to start Docker in a Docker-in-Docker setup might be:
+        # dockerd &
+        dockerd > /var/log/docker.log 2>&1 &
+        
+        sleep 5  # Give Docker some time to start
+
+        # Verify if Docker started successfully
+        if is_docker_running; then
+            echo "Docker started successfully."
+        else
+            echo "Failed to start Docker. Please check the Docker logs."
+            exit 1
+        fi
+    else
+        echo "Docker command not found. Please install Docker or ensure Docker is available."
+        exit 1
+    fi
+fi
+
 export DOCKER_DEFAULT_PLATFORM=linux/amd64
 
 if $clean_build; then
