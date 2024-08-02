@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  docker:
+    image: docker:20.10-dind
+    privileged: true
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+      - "3000:3000"
+    volumes:
+      - /var/lib/docker
+    entrypoint:
+      [
+        "sh",
+        "-c",
+        "dockerd & sleep 5 && ./docker_run.sh load"
+      ]

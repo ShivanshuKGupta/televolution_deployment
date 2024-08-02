@@ -14,7 +14,7 @@ WORKDIR /app
 
 # RUN [ -d "/app/docker_image_builds" ] || { echo "Error: docker_image_builds folder does not exist"; exit 1; }
 
-RUN chmod +x docker_run.sh
+RUN chmod +x /app/docker_run.sh
 
 EXPOSE 8000 8001 3000 3001
 
