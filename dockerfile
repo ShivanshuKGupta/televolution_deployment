@@ -30,4 +30,4 @@ RUN chmod +x docker_run.sh
 
 EXPOSE 8000 8001 3000 3001
 
-ENTRYPOINT ["./docker_run.sh", "clean", "load"]
+ENTRYPOINT ["sh", "-c", "dockerd & sleep 10 && ./docker_run.sh load"]
